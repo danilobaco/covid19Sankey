@@ -1,10 +1,11 @@
 <html>
   <head>
-<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">	  
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">	
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+	var select=[]
       google.charts.load('current', {'packages':['sankey']});
       google.charts.setOnLoadCallback(drawChart);
 
@@ -29,7 +30,7 @@
 		  //sankey: { node: { labelPadding: 90 } },
 		  sankey: { 
 			node: { 
-				nodePadding: 30 , 
+				nodePadding: 40 , 
 				width: 20 ,
 				colors: colors,
 				interactivity: true,
@@ -63,18 +64,49 @@
 		//google.visualization.events.addListener(chart, 'select', selectHandler);
 
 		chart.draw(data, options);
+		//chart.setSelection([{row:8, column:null},{row:62, column:null},{row:116, column:null}]);
 		
-		google.visualization.events.addListener(chart, 'select', function() {
-              var sel = chart.getSelection();
-			  var sel = chart.setSelection("Grupo2");
-              if (sel.length)
-                  alert('You selected node "' + sel[0].name + '"');
-          });
+		/*google.visualization.events.addListener(chart, 'select', function() {
+              //var sel = chart.getSelection();
+              //if (sel.length)
+                //  alert('You selected node "' + sel[0].name + '"');
+				//console.log("teste")
+				//console.log(select)
+				
+				//for(var j=0;j<select.length;j++){
+					//chart.setSelection(select[j]);
+					//console.log("selecting")
+				
+				//}
+				
+				var selection = chart.getSelection();
+				var message = '';
+
+				for (var i = 0; i < selection.length; i++) {
+					var item = selection[i];
+					if (item.row != null && item.column != null) {
+					  message += '{row:' + item.row + ',column:' + item.column + '}';
+					} 
+					else if (item.row != null) {
+					  message += '{row:' + item.row + '}';
+					  select.push(item);
+					} else if (item.column != null) {
+					  message += '{column:' + item.column + '}';
+					}
+					if(item.name != null){
+						message += '{name:' + item.name + '}';
+						
+					}
+				}
+				if (message == '') {
+						message = 'nothing';
+				}
+				alert('You selected ' + message);
+				});*/
 		
        });
 	   
       }
-	  
 	  
     </script>
   </head>
