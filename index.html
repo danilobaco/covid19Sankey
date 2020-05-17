@@ -1,0 +1,84 @@
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['sankey']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        $.get("data2.csv", function(csvString) {
+      // fetch CSV file using ajax
+	  var colors = ['#a6cee3', '#b2df8a', '#fb9a99', '#fdbf6f',
+                  '#cab2d6', '#ffff99', '#1f78b4', '#33a02c'];
+      var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+       var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Group1');
+        data.addColumn('string', 'Group2');
+        data.addColumn('number', 'Number');      
+		//data.addColumn({type:'string', role:'annotationText'});
+        data.addColumn({'type': 'string', 'role': 'tooltip', 'p': {'html': true}})
+        //data.addColumn({type: 'string', role: 'tooltip'});
+        data.addRows(arrayData);
+        // Sets chart options.
+        var options = {
+          width: 800,
+		  height: 400,
+		  //sankey: { node: { labelPadding: 90 } },
+		  sankey: { 
+			node: { 
+				nodePadding: 30 , 
+				width: 20 ,
+				colors: colors,
+				interactivity: true,
+			},
+			link: {
+				colorMode: 'gradient',
+				colors: colors,
+				interactivity: true
+			}
+			
+		},
+          //sankey: {link: {interactivity: true}},
+		  //sankey: {node: {interactivity: true}}
+          //sankey: {node: {interactivity: true,}},
+          //tooltip: {isHtml: true},
+		  //sankey: { node: { width: 0.5 } },
+		  //sankey: {link: { color: { fill: 'lightblue' } },
+		    //sankey: { node: {colors: colors}},
+		/*sankey: {
+			link: {
+				colorMode: 'gradient',
+				colors: colors,
+				interactivity: true
+			}
+		},*/
+		   //sankey: { link: { color: { stroke: 'lightblue', strokeWidth: 0.2 } },
+        };
+
+        // Instantiates and draws our chart, passing in some options.
+        var chart = new google.visualization.Sankey(document.getElementById('sankey_basic', 'HTML_tooltip'));
+		//google.visualization.events.addListener(chart, 'select', selectHandler);
+
+		chart.draw(data, options);
+		
+		google.visualization.events.addListener(chart, 'select', function() {
+              var sel = chart.getSelection();
+			  var sel = chart.setSelection("Grupo2");
+              if (sel.length)
+                  alert('You selected node "' + sel[0].name + '"');
+          });
+		
+       });
+	   
+      }
+	  
+	  
+    </script>
+  </head>
+  <body>
+    <div id="sankey_basic" style="width: 900px; height: 300px;"></div>
+    <div id="HTML_tooltip" style="position: relative;
+  </body>
+</html>
