@@ -1,147 +1,47 @@
+<!DOCTYPE html>
 <html>
   <head>
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">	
+  <meta name="viewport" content="width=device-width">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+	
     <script type="text/javascript">
-	//var select=[]
+
       google.charts.load('current', {'packages':['sankey']});
+	  google.charts.load("current", {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
-      $.get("saidaReordered.csv", function(csvString) {
-      // fetch CSV file using ajax
       
-	  //colorbrewer2=paste1 colorscheme -> https://colorbrewer2.org/#type=qualitative&scheme=Pastel1&n=5
-	  var colors = 	['#fed9a6','#fed9a6','#decbe4','#decbe4','#ccebc5', '#b3cde3','#ccebc5','#fbb4ae','#b3cde3','#fbb4ae','#fed9a6', '#decbe4', '#ccebc5', '#b3cde3', '#fbb4ae','#fed9a6','#decbe4', '#ccebc5', '#b3cde3','#fbb4ae','#fed9a6','#decbe4', '#ccebc5', '#b3cde3','#fbb4ae','#fed9a6','#decbe4', '#ccebc5', '#b3cde3','#fbb4ae'];
-	  
-	  //rainbow
-	  //var colors = 	['blue','blue','green','green','yellow', 'orange','yellow','red','orange','red','blue', 'green', 'yellow', 'orange', 'red','blue','green', 'yellow', 'orange','red','blue','green', 'yellow', 'orange','red','blue','green', 'yellow', 'orange','red'];
-				
-	  var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
-		var data = new google.visualization.DataTable();
-        data.addColumn('string', 'From');
-        data.addColumn('string', 'To');
-		data.addColumn('number', 'Costumers');      
-		data.addColumn({'type': 'string', 'role': 'tooltip', 'p': {'html': true}});
-        //data.addColumn({type: 'string', role: 'tooltip'});
-        data.addRows(arrayData);
-		// Sets chart options.
-        var options = {
-          width: 800,
-		  height: 300,
-		  sankey: {
-			iterations: 0,
-			node: { 
-				label: {
-				  fontName: 'Times-Roman',
-				  fontSize: 10,
-				  color: '#000',
-				  bold: true,
-				  italic: false
-				},
-			
-			//labelPadding: -300,
-				//colorMode: 'category',
-				nodePadding: 25 , 
-				width: 15 ,
-				colors:colors,
-				interactivity: true,
-			},
-			link: {
-				//color: { stroke: 'grey', strokeWidth: 0.5 },
-				colorMode: 'gradient',
-				//colorMode: 'source',
-				//colors: colors,
-				interactivity: true
-			}
-		   }
-			
-		};
+		$.get("sankey2.csv", function(csvString) {
+		var arrayData2 = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
 
-        // Instantiates and draws our chart, passing in some options.
-        var chart = new google.visualization.Sankey(document.getElementById('sankey_basic', 'HTML_tooltip'));
-		chart.draw(data, options);
-		});
-		
-		
-	  $.get("saidaReorderedPop.csv", function(csvString) {
-      // fetch CSV file using ajax
-      
 	  //colorbrewer2=paste1 colorscheme -> https://colorbrewer2.org/#type=qualitative&scheme=Pastel1&n=5
-	  var colors = 	['#fed9a6','#fed9a6','#decbe4','#decbe4','#ccebc5', '#b3cde3','#ccebc5','#fbb4ae','#b3cde3','#fbb4ae','#fed9a6', '#decbe4', '#ccebc5', '#b3cde3', '#fbb4ae','#fed9a6','#decbe4', '#ccebc5', '#b3cde3','#fbb4ae','#fed9a6','#decbe4', '#ccebc5', '#b3cde3','#fbb4ae','#fed9a6','#decbe4', '#ccebc5', '#b3cde3','#fbb4ae'];
+	  //var colors = 	['#fed9a6','#fed9a6','#decbe4','#decbe4','#ccebc5', '#b3cde3','#ccebc5','#fbb4ae','#b3cde3','#fbb4ae','#fed9a6', '#decbe4', '#ccebc5', '#b3cde3', '#fbb4ae','#fed9a6','#decbe4', '#ccebc5', '#b3cde3','#fbb4ae','#fed9a6','#decbe4', '#ccebc5', '#b3cde3','#fbb4ae','#fed9a6','#decbe4', '#ccebc5', '#b3cde3','#fbb4ae'];
 	  
+	  //var colors = 	['#Grupo1','#Grupo1.','#Grupo2','#Grupo2.','#Grupo3','#Grupo3.','#Grupo1..','#Grupo2..','#Grupo3..','#Grupo1...','#Grupo2...', '#Grupo3...', '#Grupo1....', '#Grupo2....', '#Grupo3....','#Grupo1.....','#Grupo2.....', '#Grupo3.....', '#Grupo1......','#Grupo2......','#Grupo3......'];
+	  
+	  var colors = 	['#4DAF4A','#4DAF4A','#FF7F00','#FF7F00','#984EA3','#984EA3','#4DAF4A','#FF7F00','#984EA3','#4DAF4A','#FF7F00', '#984EA3', '#4DAF4A', '#FF7F00', '#984EA3','#4DAF4A','#FF7F00', '#984EA3', '#4DAF4A','#FF7F00','#984EA3'];
+	  
+	  //var colors = 	['#laranja','#laranja','#roxo','#roxo','#verde', '#azul','#verde','#vermelho','#azul','#vermelho','#laranja', '#roxo', '#verde', '#azul', '#vermelho','#laranja','#roxo', '#verde', '#azul','#vermelho','#laranja','#roxo', '#verde', '#azul','#vermelho','#laranja','#roxo', '#verde', '#azul','#vermelho'];
 	  //rainbow
 	  //var colors = 	['blue','blue','green','green','yellow', 'orange','yellow','red','orange','red','blue', 'green', 'yellow', 'orange', 'red','blue','green', 'yellow', 'orange','red','blue','green', 'yellow', 'orange','red','blue','green', 'yellow', 'orange','red'];
 				
-	  var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
-		var data1 = new google.visualization.DataTable();
-        data1.addColumn('string', 'From');
-        data1.addColumn('string', 'To');
-		data1.addColumn('number', 'Costumers');      
-		data1.addColumn({'type': 'string', 'role': 'tooltip', 'p': {'html': true}});
-        //data.addColumn({type: 'string', role: 'tooltip'});
-        data1.addRows(arrayData);
-		// Sets chart options.
-        var options = {
-          width: 800,
-		  height: 350,
-		  sankey: {
-			iterations: 0,
-			node: { 
-				label: {
-				  fontName: 'Times-Roman',
-				  fontSize: 10,
-				  color: '#000',
-				  bold: true,
-				  italic: false
-				},
-			
-			//labelPadding: -300,
-				//colorMode: 'category',
-				nodePadding: 25 , 
-				width: 15 ,
-				colors:colors,
-				interactivity: true,
-			},
-			link: {
-				//color: { stroke: 'grey', strokeWidth: 0.5 },
-				colorMode: 'gradient',
-				//colorMode: 'source',
-				//colors: colors,
-				interactivity: true
-			}
-		   }
-			
-		};
-
-	   
-		
-		var chart1 = new google.visualization.Sankey(document.getElementById('sankey_basic2', 'HTML_tooltip2'));
-		chart1.draw(data1, options);
-		
-		});
-		
-		$.get("saidaReorderedDemog.csv", function(csvString) {
-      // fetch CSV file using ajax
-      
-	  //colorbrewer2=paste1 colorscheme -> https://colorbrewer2.org/#type=qualitative&scheme=Pastel1&n=5
-	  var colors = 	['#fed9a6','#fed9a6','#decbe4','#decbe4','#ccebc5', '#b3cde3','#ccebc5','#fbb4ae','#b3cde3','#fbb4ae','#fed9a6', '#decbe4', '#ccebc5', '#b3cde3', '#fbb4ae','#fed9a6','#decbe4', '#ccebc5', '#b3cde3','#fbb4ae','#fed9a6','#decbe4', '#ccebc5', '#b3cde3','#fbb4ae','#fed9a6','#decbe4', '#ccebc5', '#b3cde3','#fbb4ae'];
 	  
-	  //rainbow
-	  //var colors = 	['blue','blue','green','green','yellow', 'orange','yellow','red','orange','red','blue', 'green', 'yellow', 'orange', 'red','blue','green', 'yellow', 'orange','red','blue','green', 'yellow', 'orange','red','blue','green', 'yellow', 'orange','red'];
-				
-	  var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
 		var data2 = new google.visualization.DataTable();
         data2.addColumn('string', 'From');
         data2.addColumn('string', 'To');
 		data2.addColumn('number', 'Costumers');      
-		data2.addColumn({'type': 'string', 'role': 'tooltip', 'p': {'html': true}});
+		data2.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
         //data.addColumn({type: 'string', role: 'tooltip'});
-        data2.addRows(arrayData);
+        data2.addRows(arrayData2);
 		// Sets chart options.
         var options = {
+		tooltip: { isHtml: true },
+		 //legend: { position: 'none' },
           width: 800,
 		  height: 350,
 		  sankey: {
@@ -149,9 +49,9 @@
 			node: { 
 				label: {
 				  fontName: 'Times-Roman',
-				  fontSize: 10,
+				  fontSize: 0.1,
 				  color: '#000',
-				  bold: true,
+				  //bold: true,
 				  italic: false
 				},
 			
@@ -163,7 +63,7 @@
 				interactivity: true,
 			},
 			link: {
-				//color: { stroke: 'grey', strokeWidth: 0.5 },
+				color: { stroke: 'grey', strokeWidth: 0.5 },
 				colorMode: 'gradient',
 				//colorMode: 'source',
 				//colors: colors,
@@ -172,17 +72,22 @@
 		   }
 			
 		};
-
-	   
+		var chart_div = document.getElementById('sankey_basic3');
+		var chart2 = new google.visualization.Sankey(chart_div);
 		
-		var chart2 = new google.visualization.Sankey(document.getElementById('sankey_basic3', 'HTML_tooltip3'));
 		chart2.draw(data2, options);
+		//chart2.setSelection([{row:16}]);
 		
-		});
+		//chart2.setSelection([{row:7, column:null},{row:16, column:null},{row:28, column:null},{row:38, column:null},{row:48, column:null}]);//china
+		//chart2.setSelection([{row:9, column:null},{row:21, column:null},{row:34, column:null},{row:45, column:null},{row:58, column:null}]);//Spain
+		//chart2.setSelection([{row:10, column:null},{row:22, column:null},{row:33, column:null},{row:46, column:null},{row:57, column:null}]);//UK
+		//chart2.setSelection([{row:0, column:null},{row:12, column:null},{row:24, column:null},{row:37, column:null},{row:55, column:null}]);//France
+		//chart2.setSelection([{row:11, column:null},{row:23, column:null},{row:35, column:null},{row:47, column:null},{row:59, column:null}]);//EUA
 		
-		//chart.setSelection([{row:8, column:null},{row:62, column:null},{row:116, column:null}]);
+		//chart2.setSelection([{row:9, column:null},{row:21, column:null},{row:34, column:null},{row:45, column:null},{row:58, column:null},{row:11, column:null},{row:23, column:null},{row:35, column:null},{row:47, column:null},{row:59, column:null}]);
 		
-		/*google.visualization.events.addListener(chart, 'select', function() {
+		
+		google.visualization.events.addListener(chart2, 'select', function() {
               //var sel = chart.getSelection();
               //if (sel.length)
                 //  alert('You selected node "' + sel[0].name + '"');
@@ -195,9 +100,9 @@
 				
 				//}
 				
-				var selection = chart.getSelection();
+				var selection = chart2.getSelection();
 				var message = '';
-				console.log(selection[0]);
+				
 				for (var i = 0; i < selection.length; i++) {
 					var item = selection[i];
 					
@@ -206,7 +111,7 @@
 					} 
 					else if (item.row != null) {
 					  message += '{row:' + item.row + '}';
-					  select.push(item);
+					  //select.push(item);
 					} else if (item.column != null) {
 					  message += '{column:' + item.column + '}';
 					}
@@ -218,35 +123,163 @@
 				if (message == '') {
 						message = 'nothing';
 				}
-				alert('You selected ' + message);
-		});*/
+				console.log(message);
+				//alert('You selected ' + message);
+		});
 		
-       
-      }
+		
+		//console.log(chart2.getImageURI());
+		});
+		
+		
+		
+		$.get("sankeyLog.csv", function(csvString) {
+		var arrayData3 = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+
+	  //colorbrewer2=paste1 colorscheme -> https://colorbrewer2.org/#type=qualitative&scheme=Pastel1&n=5
+	  //var colors = 	['#fed9a6','#fed9a6','#decbe4','#decbe4','#ccebc5', '#b3cde3','#ccebc5','#fbb4ae','#b3cde3','#fbb4ae','#fed9a6', '#decbe4', '#ccebc5', '#b3cde3', '#fbb4ae','#fed9a6','#decbe4', '#ccebc5', '#b3cde3','#fbb4ae','#fed9a6','#decbe4', '#ccebc5', '#b3cde3','#fbb4ae','#fed9a6','#decbe4', '#ccebc5', '#b3cde3','#fbb4ae'];
+	  
+	  //var colors = 	['#Grupo1','#Grupo1.','#Grupo2','#Grupo2.','#Grupo3','#Grupo3.','#Grupo1..','#Grupo2..','#Grupo3..','#Grupo1...','#Grupo2...', '#Grupo3...', '#Grupo1....', '#Grupo2....', '#Grupo3....','#Grupo1.....','#Grupo2.....', '#Grupo3.....', '#Grupo1......','#Grupo2......','#Grupo3......'];
+	  
+	  var colors = 	['#4DAF4A','#4DAF4A','#FF7F00','#FF7F00','#984EA3','#984EA3','#4DAF4A','#FF7F00','#984EA3','#4DAF4A','#FF7F00', '#984EA3', '#4DAF4A', '#FF7F00', '#984EA3','#4DAF4A','#FF7F00', '#984EA3', '#4DAF4A','#FF7F00','#984EA3'];
+	  
+	  //var colors = 	['#laranja','#laranja','#roxo','#roxo','#verde', '#azul','#verde','#vermelho','#azul','#vermelho','#laranja', '#roxo', '#verde', '#azul', '#vermelho','#laranja','#roxo', '#verde', '#azul','#vermelho','#laranja','#roxo', '#verde', '#azul','#vermelho','#laranja','#roxo', '#verde', '#azul','#vermelho'];
+	  //rainbow
+	  //var colors = 	['blue','blue','green','green','yellow', 'orange','yellow','red','orange','red','blue', 'green', 'yellow', 'orange', 'red','blue','green', 'yellow', 'orange','red','blue','green', 'yellow', 'orange','red','blue','green', 'yellow', 'orange','red'];
+				
+	  
+		var data2 = new google.visualization.DataTable();
+        data2.addColumn('string', 'From');
+        data2.addColumn('string', 'To');
+		data2.addColumn('number', 'Costumers');      
+		data2.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
+        //data.addColumn({type: 'string', role: 'tooltip'});
+        data2.addRows(arrayData3);
+		// Sets chart options.
+        var options = {
+		tooltip: { isHtml: true },
+		 //legend: { position: 'none' },
+          width: 800,
+		  height: 350,
+		  sankey: {
+			iterations: 0,
+			node: { 
+				label: {
+				  fontName: 'Times-Roman',
+				  fontSize: 0.1,
+				  color: '#000',
+				  //bold: true,
+				  italic: false
+				},
+			
+			//labelPadding: -300,
+				//colorMode: 'category',
+				nodePadding: 25 , 
+				width: 15 ,
+				colors:colors,
+				interactivity: true,
+			},
+			link: {
+				color: { stroke: 'grey', strokeWidth: 0.5 },
+				colorMode: 'gradient',
+				//colorMode: 'source',
+				//colors: colors,
+				interactivity: true
+			}
+		   }
+			
+		};
+		var chart_div = document.getElementById('sankey_basic4');
+		var chart3 = new google.visualization.Sankey(chart_div);
+		
+		chart3.draw(data2, options);
+		//chart2.setSelection([{row:16}]);
+		
+		//chart2.setSelection([{row:7, column:null},{row:16, column:null},{row:28, column:null},{row:38, column:null},{row:48, column:null}]);//china
+		//chart2.setSelection([{row:9, column:null},{row:21, column:null},{row:34, column:null},{row:45, column:null},{row:58, column:null}]);//Spain
+		//chart2.setSelection([{row:10, column:null},{row:22, column:null},{row:33, column:null},{row:46, column:null},{row:57, column:null}]);//UK
+		//chart2.setSelection([{row:0, column:null},{row:12, column:null},{row:24, column:null},{row:37, column:null},{row:55, column:null}]);//France
+		//chart2.setSelection([{row:11, column:null},{row:23, column:null},{row:35, column:null},{row:47, column:null},{row:59, column:null}]);//EUA
+		
+		//chart2.setSelection([{row:9, column:null},{row:21, column:null},{row:34, column:null},{row:45, column:null},{row:58, column:null},{row:11, column:null},{row:23, column:null},{row:35, column:null},{row:47, column:null},{row:59, column:null}]);
+		
+		
+		google.visualization.events.addListener(chart3, 'select', function() {
+              //var sel = chart.getSelection();
+              //if (sel.length)
+                //  alert('You selected node "' + sel[0].name + '"');
+				//console.log("teste")
+				//console.log(select)
+				
+				//for(var j=0;j<select.length;j++){
+					//chart.setSelection(select[j]);
+					//console.log("selecting")
+				
+				//}
+				
+				var selection = chart3.getSelection();
+				var message = '';
+				
+				for (var i = 0; i < selection.length; i++) {
+					var item = selection[i];
+					
+					if (item.row != null && item.column != null) {
+					  message += '{row:' + item.row + ',column:' + item.column + '}';
+					} 
+					else if (item.row != null) {
+					  message += '{row:' + item.row + '}';
+					  //select.push(item);
+					} else if (item.column != null) {
+					  message += '{column:' + item.column + '}';
+					}
+					if(item.name != null){
+						message += '{name:' + item.name + '}';
+						
+					}
+				}
+				if (message == '') {
+						message = 'nothing';
+				}
+				console.log(message);
+				//alert('You selected ' + message);
+		});
+		
+		
+		//console.log(chart2.getImageURI());
+		});
+		
+		
+		
+		
+		//chart.setSelection([{row:8, column:null},{row:62, column:null},{row:116, column:null}]);
+		
+		
+	  
+	}
 	  
     </script>
   </head>
   <body>
-  <div class="titulo1" style="float:left;">
+  <!--<div class="titulo1" style="float:left;">	
         <h2>Sankey com 1 valor &uacutenico para todos os pa&iacuteses (espessuraLinha=valor=1)</h2>
    </div
 	<div>
 		<div id="sankey_basic" style="width: 900px; height: 320px;float:left;"></div>
 		<div id="HTML_tooltip" style="position: relative;"></div>
-	</div>
+	</div>-->
 	 <div class="titulo2" style="float:left;">
-            <h2>Sankey mapeando popula&ccedil&atildeo (espessuraLinha=valor=popula&ccedil&atildeo<a href="https://pt.wikipedia.org/wiki/Lista_de_pa%C3%ADses_por_popula%C3%A7%C3%A3o"><sup>[1]</sup></a>)</h2>
-        </div>
-	<div>
-		<div id="sankey_basic2" style="width: 900px; height: 370px;float:left;"></div>
-		<div id="HTML_tooltip2" style="position: relative;"></div>
-	</div>
-	<div class="titulo3" style="float:left;">
-            <h2>Sankey mapeando densidade populacional - hab/m<sup>2</sup></br> (espessuraLinha=valor=densidadePopulacional<a href="https://pt.wikipedia.org/wiki/Lista_de_pa%C3%ADses_por_densidade_populacional"><sup>[2]</sup></a>)</h2>
+            <h2>Sankey 6 primeiras semanas (espessuraLinha=morte por milh&atildeo em numeros absolutos)</h2>
         </div>
 	<div>
 		<div id="sankey_basic3" style="width: 900px; height: 370px;float:left;"></div>
-		<div id="HTML_tooltip3" style="position: relative;"></div>
+		<!--<div id="HTML_tooltip2" style="position: relative;"></div>-->
+	</div>
+	<div class="titulo3" style="width: 900px; height: 100px;float:left;">
+            <h2>Sankey 6 primeiras semanas (espessuraLinha=morte por milh&atildeo - escala Log base 2)</h2>
+        </div>
+	<div>
+		<div id="sankey_basic4" style="width: 1100px; height: 370px;float:left;"></div>
+		<!--<div id="HTML_tooltip3" style="position: relative;"></div>-->
 	</div>
    </body>
 </html>
